@@ -4,7 +4,7 @@ A community booking-webapp that will be made available for the Norwegian communi
 
 ### Initial plan / architecture
 
-CommunityWeb will use [EntraOs.js](https://github.com/Teknologihuset/entraos-js) (_work-in-progress_) to fetch data from the Rebel API's.
+CommunityWeb will use [EntraOs.js](https://github.com/Teknologihuset/entraos-js) (_work in progress_) to fetch data from the Rebel API's.
 
 CommunityWeb will be released in multiple stages, the first being having only the ability to search and query availability of the Meetup-rooms.
 
