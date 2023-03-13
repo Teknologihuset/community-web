@@ -23,15 +23,15 @@ export async function EntraClient() {
     client = new issuer.Client({
         client_id: clientId,
         client_secret: clientSecret,
-        redirect_uris: ["http://localhost:3000/api/login-callback"],
-        post_logout_redirect_uris: [ 'http://localhost:3000/logout/callback' ],
+        redirect_uris: ["http://localhost:3000/api/login/callback"],
+        post_logout_redirect_uris: [ 'http://localhost:3000/' ],
         token_endpoint_auth_method: 'client_secret_post',
         token_endpoint_auth_signing_alg: "RS256",
         response_types: ["code id_token token"],
         grant_type: "authorization_code",
         scope: "openid email profile",
         response_mode: "fragment",
-        default_max_age: 60000
+        default_max_age: 3600
     });
 
     return client;

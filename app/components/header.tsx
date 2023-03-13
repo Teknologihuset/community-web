@@ -4,6 +4,7 @@ import {useState} from 'react';
 import Link from 'next/link'
 import './header.module.css'
 import {useRouter} from "next/navigation";
+import {signOut} from "next-auth/react";
 
 export function Header() {
   const [burger, setBurger] = useState(false);
@@ -33,9 +34,7 @@ export function Header() {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              <strong>
-                <button className="button is-dark-blue" onClick={() => router.refresh()}>Oppdater</button>
-              </strong>
+              <Link className="button is-dark-blue" href="/api/auth/logout">Log out</Link>
             </div>
           </div>
         </div>

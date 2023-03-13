@@ -1,40 +1,16 @@
 import React from "react";
-import Image from "next/image";
-import logo from "#/public/logo.png";
-import {Metadata} from "next";
-import Link from "next/link";
+import {LoginForm} from "#/app/components/LoginForm";
 
-export const metadata: Metadata = {
-    description: 'Community Web Login',
-};
+export default async function Application() {
 
-export default function Application() {
+    const providers = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/providers`, {
+        cache: 'no-store'
+    }).then(value => value.json());
+
     return (
         <body className="">
             <main>
-                <section className={`hero is-fullheight`}>
-                    <div className={`hero-body`}>
-                        <div className="container">
-                            <div className={"columns is-centered"}>
-                                <div className={"column is-half has-text-centered"}>
-                                    <div className={"box"}>
-                                        <figure className={"is-inline-block"}>
-                                            <Image priority={true}
-                                                   className="image"
-                                                   src={logo}
-                                                   alt="Teknologihuset logo" />
-                                        </figure>
-                                        <h1 className="title">Community Web</h1>
-                                        <h2 className="subtitle">
-                                            Log in to continue.
-                                        </h2>
-                                        <a className={"button is-primary"} href="/api/login">CONTINUE</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <LoginForm providers={providers} />
             </main>
         </body>
     )
