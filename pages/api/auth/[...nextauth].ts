@@ -27,7 +27,9 @@ export default NextAuth({
                 const {given_name, family_name, sub} = profile;
                 return {
                     id: `${profile.customer_ref}-${sub}`,
-                    given_name, family_name, sub
+                    given_name, family_name, sub,
+                    name: `${given_name} ${family_name}`,
+                    email: sub
                 }
             }
         }
@@ -35,7 +37,10 @@ export default NextAuth({
     callbacks: {
         async jwt({ token, user, account }) {
             if (account && user) {
+                console.log("User %s was logged in at %s", token.name,
+                    new Date(Date.now()).toLocaleString("no-nb", { timeZone: 'CET' }))
                 return {
+                    ...token,
                     access_token: account.access_token,
                     expires_at: Date.now() + 1000 * (account.expires_at ?? 900),
                     refresh_token: account.refresh_token,
@@ -52,6 +57,7 @@ export default NextAuth({
 
             // refresh token rotation
             if (Date.now() > rebelTokens.expires_at) {
+                console.log("Token has expired. Trying to refresh.")
                 const client = await EntraClient();
                 const tokenEndpoint = client.issuer.metadata.token_endpoint;
                 if (!tokenEndpoint) throw new Error("No token endpoint on client - cannot refresh access token");
@@ -75,6 +81,8 @@ export default NextAuth({
                     return { ...token, error: "RefreshAccessTokenError" }
                 }
 
+                console.log("Token has been updated.")
+
                 return {
                     ...token,
                     access_token: tokens.access_token,
@@ -84,6 +92,7 @@ export default NextAuth({
             }
 
             if (token.version !== version) {
+                console.warn("User %s %s has an outdated app version.", token.name, token.email)
                 return {
                     ...token,
                     error: "InvalidVersionError"
@@ -93,12 +102,17 @@ export default NextAuth({
             return token
         },
         async session({ session, token }) {
-            // @ts-ignore
-            session.user = token.user
-            // @ts-ignore
-            session.error = token.error
-            // @ts-ignore
-            session.version = token.version
+            if (token && token.user)
+                session.user = token.user
+
+            if (token && token.error)
+                // @ts-ignore
+                session.error = token.error
+
+            if (token.version)
+                // @ts-ignore
+                session.version = token.version
+
             return session
         }
     },

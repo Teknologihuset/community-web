@@ -3,12 +3,10 @@
 import {useState} from 'react';
 import Link from 'next/link'
 import './header.module.css'
-import {useRouter} from "next/navigation";
-import {signOut} from "next-auth/react";
+import LogoutButton from "#/app/components/auth/LogoutButton";
 
 export function Header() {
   const [burger, setBurger] = useState(false);
-  const router = useRouter();
 
   return (
     <nav className={`navbar is-fixed-top`} role="navigation" aria-label="main navigation">
@@ -27,14 +25,15 @@ export function Header() {
 
       <div id="navbarCommunityWeb" className={burger ? "navbar-menu is-active" : "navbar-menu"}>
         <div className="navbar-start">
-          <Link className="navbar-item" href="/">Hjem</Link>
-          <Link className="navbar-item" href="/login">Login</Link>
+          <Link className="navbar-item" href="/community">Hjem</Link>
+          <Link className="navbar-item" href="/community/calendar">Kalendar</Link>
+          <Link className="navbar-item" href="/community/events">Events</Link>
         </div>
 
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              <Link className="button is-dark-blue" href="/api/auth/logout">Log out</Link>
+              <LogoutButton />
             </div>
           </div>
         </div>

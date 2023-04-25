@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
 import type {Metadata} from 'next'
-import {Header} from "../components/header";
+import {Header} from "../components/header/header";
 
 export const metadata: Metadata = {
     description: 'Community Web - Teknologihuset',
